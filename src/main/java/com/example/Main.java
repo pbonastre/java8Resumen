@@ -1,38 +1,44 @@
 package com.example;
 
-public static void main(String[] args) {
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Pattern;
 
-        System.out.println(changeFormat("please quote  your policy number:112-39-8552."));
-        System.out.println(readFirstLine("src/main/resources/prueba.txt"));
-        ;
+public class Main {
+    public static void main(String[] args) {
+      System.out.println(changeFormat("please quote  your policy number:112-39-8552."));
+      System.out.println(readFirstLine("src/main/resources/prueba.txt"));
+
+
     }
+  public static String changeFormat(String paragraph) {
+    return Pattern.compile("\\d{3}-\\d{2}-\\d{4}").matcher(paragraph)
+      .replaceAll(mr -> mr.group().replaceAll("-", "/"));
+  }
 
-    public static String changeFormat(String paragraph) {
+  static String readFirstLine(String path){
+    BufferedReader file = null;
+    String buffer = null;
 
-        return Pattern.compile("\\d{3}-\\d{2}-\\d{4}").matcher(paragraph)
-                .replaceAll(mr -> mr.group().replaceAll("-", "/"));
-    }
+    try{
+      file = new BufferedReader(new FileReader(path));
+      buffer = file.readLine();
 
-    static String readFirstLine(String path){
-        BufferedReader file = null;
-        String buffer = null;
-
+    }catch (IOException e) {
+      System.out.println("CAGADA");
+    }finally {
+      if(file !=null){
         try{
-            file = new BufferedReader(new FileReader(path));
-            buffer = file.readLine();
-
-        }catch (IOException e) {
-            System.out.println("CAGADA");
-        }finally {
-            if(file !=null){
-                try{
-                    file.close();
-                }catch (IOException e){
-                    System.out.println("CAGADA");
-                }
-            }
+          file.close();
+        }catch (IOException e){
+          System.out.println("CAGADA");
         }
-        return buffer;
-
+      }
     }
+    return buffer;
+
+  }
 }
+
+
